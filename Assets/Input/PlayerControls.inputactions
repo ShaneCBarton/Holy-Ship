@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "Flight",
@@ -9,6 +9,24 @@
                     "name": "Rotate",
                     "type": "Button",
                     "id": "fd63cbb7-2071-4864-a276-911a4015c961",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Propel",
+                    "type": "Button",
+                    "id": "92b65855-c6af-45b5-a0ea-dfa529eaca51",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "a679189c-1386-4f9a-9c13-4d4412f20b3d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -48,6 +66,28 @@
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "9399d894-4144-4be7-8e13-40ca351b8c4d",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Propel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e91d2ca9-22d3-4a20-954c-f4970346eb3e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

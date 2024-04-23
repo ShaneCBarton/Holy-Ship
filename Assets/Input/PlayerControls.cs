@@ -35,6 +35,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Propel"",
+                    ""type"": ""Button"",
+                    ""id"": ""92b65855-c6af-45b5-a0ea-dfa529eaca51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""a679189c-1386-4f9a-9c13-4d4412f20b3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -70,6 +88,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9399d894-4144-4be7-8e13-40ca351b8c4d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Propel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e91d2ca9-22d3-4a20-954c-f4970346eb3e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -79,6 +119,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Flight
         m_Flight = asset.FindActionMap("Flight", throwIfNotFound: true);
         m_Flight_Rotate = m_Flight.FindAction("Rotate", throwIfNotFound: true);
+        m_Flight_Propel = m_Flight.FindAction("Propel", throwIfNotFound: true);
+        m_Flight_Brake = m_Flight.FindAction("Brake", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -141,11 +183,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Flight;
     private List<IFlightActions> m_FlightActionsCallbackInterfaces = new List<IFlightActions>();
     private readonly InputAction m_Flight_Rotate;
+    private readonly InputAction m_Flight_Propel;
+    private readonly InputAction m_Flight_Brake;
     public struct FlightActions
     {
         private @PlayerControls m_Wrapper;
         public FlightActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Rotate => m_Wrapper.m_Flight_Rotate;
+        public InputAction @Propel => m_Wrapper.m_Flight_Propel;
+        public InputAction @Brake => m_Wrapper.m_Flight_Brake;
         public InputActionMap Get() { return m_Wrapper.m_Flight; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -158,6 +204,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
+            @Propel.started += instance.OnPropel;
+            @Propel.performed += instance.OnPropel;
+            @Propel.canceled += instance.OnPropel;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
         }
 
         private void UnregisterCallbacks(IFlightActions instance)
@@ -165,6 +217,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
+            @Propel.started -= instance.OnPropel;
+            @Propel.performed -= instance.OnPropel;
+            @Propel.canceled -= instance.OnPropel;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
         }
 
         public void RemoveCallbacks(IFlightActions instance)
@@ -185,5 +243,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IFlightActions
     {
         void OnRotate(InputAction.CallbackContext context);
+        void OnPropel(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
     }
 }
