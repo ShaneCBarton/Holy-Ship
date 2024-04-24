@@ -10,6 +10,7 @@ public class FlightControl : MonoBehaviour
     [SerializeField] private float maxRotationSpeed;
     [SerializeField] private float propelSpeed;
     [SerializeField] private float brakingDrag;
+    [SerializeField] private GameObject shieldObject;
 
     private PlayerControls playerControls;
     private Rigidbody2D myRigidbody;
@@ -32,6 +33,9 @@ public class FlightControl : MonoBehaviour
         playerControls.Flight.Propel.canceled += _ => OnPropelStop();
 
         playerControls.Flight.Brake.performed += _ => OnBrake();
+
+        playerControls.Combat.Shield.started += _ => OnShieldStart();
+        playerControls.Combat.Shield.canceled += _ => OnShieldStop();
     }
 
     private void OnEnable()
@@ -69,6 +73,16 @@ public class FlightControl : MonoBehaviour
     private void OnBrake()
     {
         isBraking = true;
+    }
+
+    private void OnShieldStart()
+    {
+        shieldObject.SetActive(true);
+    }
+
+    private void OnShieldStop()
+    {
+        shieldObject.SetActive(false);
     }
 
     private void FixedUpdate()
