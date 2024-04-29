@@ -12,6 +12,7 @@ public class FlightControl : MonoBehaviour
     [SerializeField] private float brakingDrag;
     [SerializeField] private GameObject shieldObject;
     [SerializeField] private GameObject burnerObject;
+    [SerializeField] private GameObject smokeEffectObject;
 
     private PlayerControls playerControls;
     private Rigidbody2D myRigidbody;
@@ -77,6 +78,7 @@ public class FlightControl : MonoBehaviour
     private void OnBrake()
     {
         isBraking = true;
+        smokeEffectObject.SetActive(true);
     }
 
     private void OnShieldStart()
