@@ -1,24 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.InputSystem;
 
 public class FlightControl : MonoBehaviour
 {
+    [Header("Flight Variables")]
     [SerializeField] private float turnSpeed;
     [SerializeField] private float maxRotationSpeed;
     [SerializeField] private float propelSpeed;
     [SerializeField] private float brakingDrag;
+
+    [Header("Required Game Object References")]
     [SerializeField] private GameObject shieldObject;
     [SerializeField] private GameObject burnerObject;
     [SerializeField] private GameObject smokeEffectObject;
+
+    [Header("Projectile Variables")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private float projectileCooldown;
 
     private PlayerControls playerControls;
     private Rigidbody2D myRigidbody;
     private bool isRotating = false;
     private bool isMoving = false;
     private bool isBraking = false;
+    private bool isShooting = false;
+    private bool canShoot = true;
 
     private void Awake()
     {
@@ -38,6 +49,8 @@ public class FlightControl : MonoBehaviour
 
         playerControls.Combat.Shield.started += _ => OnShieldStart();
         playerControls.Combat.Shield.canceled += _ => OnShieldStop();
+
+        playerControls.Combat.Fire.performed += _ => OnFire();
 
     }
 
@@ -91,11 +104,21 @@ public class FlightControl : MonoBehaviour
         shieldObject.SetActive(false);
     }
 
+    private void OnFire()
+    {
+        isShooting = true;
+    }
+
     private void FixedUpdate()
     {
         RotateShip();
         PropelShip();
         Brake();
+    }
+
+    private void Update()
+    {
+        Fire();
     }
 
     private void RotateShip()
@@ -140,5 +163,22 @@ public class FlightControl : MonoBehaviour
             myRigidbody.drag = 0f;
             myRigidbody.angularDrag = 0.05f;
         }
+    }
+
+    private void Fire()
+    {
+        if (isShooting && canShoot)
+        {
+            Instantiate(projectilePrefab, projectileSpawnPoint);
+            canShoot = false;
+            isShooting = false;
+            StartCoroutine(FiringCooldownRoutine());
+        }
+    }
+   
+    private IEnumerator FiringCooldownRoutine()
+    {
+        yield return new WaitForSeconds(projectileCooldown);
+        canShoot = true;
     }
 }

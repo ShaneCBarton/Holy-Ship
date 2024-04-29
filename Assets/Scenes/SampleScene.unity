@@ -412,7 +412,7 @@ Transform:
   m_GameObject: {fileID: 460421438}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.329, z: 0}
+  m_LocalPosition: {x: 0, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -779,10 +779,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 460421439}
   - {fileID: 580970122}
   - {fileID: 886559118}
   - {fileID: 1648552132}
-  - {fileID: 460421439}
   m_Father: {fileID: 723923808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
@@ -1090,6 +1090,9 @@ MonoBehaviour:
   shieldObject: {fileID: 580970121}
   burnerObject: {fileID: 886559117}
   smokeEffectObject: {fileID: 1648552131}
+  projectilePrefab: {fileID: 8006509622840285973, guid: a1104829dab580341b0010b3000e5baa, type: 3}
+  projectileSpawnPoint: {fileID: 460421439}
+  projectileCooldown: 0.5
 --- !u!114 &723923810
 MonoBehaviour:
   m_ObjectHideFlags: 0
