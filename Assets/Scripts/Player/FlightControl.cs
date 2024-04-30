@@ -23,8 +23,15 @@ public class FlightControl : MonoBehaviour
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private float projectileCooldown;
 
+    [Header("Energy Requirements")]
+    [SerializeField] private float energyCostToShoot;
+    [SerializeField] private float energyCostToShield;
+    [SerializeField] private float energyCostToBlink;
+
     private PlayerControls playerControls;
     private Rigidbody2D myRigidbody;
+    private Energy energy;
+
     private bool isRotating = false;
     private bool isMoving = false;
     private bool isBraking = false;
@@ -41,17 +48,15 @@ public class FlightControl : MonoBehaviour
     {
         playerControls.Flight.Rotate.started += _ => OnRotateStart();
         playerControls.Flight.Rotate.canceled += _ => OnRotateStop();
-
         playerControls.Flight.Propel.started += _ => OnPropelStart();
         playerControls.Flight.Propel.canceled += _ => OnPropelStop();
-
         playerControls.Flight.Brake.performed += _ => OnBrake();
 
         playerControls.Combat.Shield.started += _ => OnShieldStart();
         playerControls.Combat.Shield.canceled += _ => OnShieldStop();
-
         playerControls.Combat.Fire.performed += _ => OnFire();
 
+        energy = gameObject.GetComponentInChildren<Energy>();
     }
 
     private void OnEnable()
@@ -96,7 +101,11 @@ public class FlightControl : MonoBehaviour
 
     private void OnShieldStart()
     {
+        bool canShield = energyCostToShield < energy.CurrentEnergyAmount;
+        if (!canShield) { return; }
+
         shieldObject.SetActive(true);
+        energy.ConsumeEnergy(energyCostToShield);
     }
 
     private void OnShieldStop()
@@ -106,7 +115,11 @@ public class FlightControl : MonoBehaviour
 
     private void OnFire()
     {
+        bool canShoot = energyCostToShoot < energy.CurrentEnergyAmount;
+        if (!canShoot) { return; }
+            
         isShooting = true;
+        energy.ConsumeEnergy(energyCostToShoot);
     }
 
     private void FixedUpdate()

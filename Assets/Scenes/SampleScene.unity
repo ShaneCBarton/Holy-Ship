@@ -951,6 +951,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &704713728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 704713729}
+  - component: {fileID: 704713730}
+  m_Layer: 3
+  m_Name: Energy System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &704713729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704713728}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 723923808}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &704713730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704713728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d4158fb8bcc534f8006287016ecdb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnergyAmount: 1000
 --- !u!1 &706965676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,6 +1114,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 617825795}
+  - {fileID: 704713729}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &723923809
@@ -1093,6 +1139,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8006509622840285973, guid: a1104829dab580341b0010b3000e5baa, type: 3}
   projectileSpawnPoint: {fileID: 460421439}
   projectileCooldown: 0.5
+  energyCostToShoot: 100
+  energyCostToShield: 250
+  energyCostToBlink: 0
 --- !u!114 &723923810
 MonoBehaviour:
   m_ObjectHideFlags: 0
