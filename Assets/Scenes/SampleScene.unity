@@ -1138,7 +1138,7 @@ MonoBehaviour:
   smokeEffectObject: {fileID: 1648552131}
   projectilePrefab: {fileID: 8006509622840285973, guid: a1104829dab580341b0010b3000e5baa, type: 3}
   projectileSpawnPoint: {fileID: 460421439}
-  projectileCooldown: 0.5
+  projectileCooldown: 0.25
   energyCostToShoot: 100
   energyCostToShield: 250
   energyCostToBlink: 0

@@ -101,7 +101,8 @@ public class FlightControl : MonoBehaviour
 
     private void OnShieldStart()
     {
-        bool canShield = energyCostToShield < energy.CurrentEnergyAmount;
+
+        bool canShield = energyCostToShield <= energy.CurrentEnergyAmount;
         if (!canShield) { return; }
 
         shieldObject.SetActive(true);
@@ -115,7 +116,7 @@ public class FlightControl : MonoBehaviour
 
     private void OnFire()
     {
-        bool canShoot = energyCostToShoot < energy.CurrentEnergyAmount;
+        bool canShoot = energyCostToShoot <= energy.CurrentEnergyAmount;
         if (!canShoot) { return; }
             
         isShooting = true;
