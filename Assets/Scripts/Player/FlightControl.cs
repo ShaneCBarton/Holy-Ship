@@ -218,8 +218,11 @@ public class FlightControl : MonoBehaviour
     {
         if (isBlinking && canBlink)
         {
-            Vector2 newPosition = transform.position * blinkDistanceMultiplier;
-            myRigidbody.position = newPosition;
+            Vector2 newPosition = myRigidbody.transform.up * blinkDistanceMultiplier;
+            myRigidbody.position += newPosition;
+
+            canBlink = false;
+            isBlinking = false;
 
             StartCoroutine(CooldownRoutine(blinkCooldown, CooldownType.Blink));
         }
