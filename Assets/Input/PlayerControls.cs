@@ -134,6 +134,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Blink"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9da3aa6-49f2-4e32-9281-6c5b5e49359c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +167,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48a647e6-27c4-4c31-93a7-3392072cfb1e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Blink"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -173,6 +193,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_Shield = m_Combat.FindAction("Shield", throwIfNotFound: true);
         m_Combat_Fire = m_Combat.FindAction("Fire", throwIfNotFound: true);
+        m_Combat_Blink = m_Combat.FindAction("Blink", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,12 +319,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
     private readonly InputAction m_Combat_Shield;
     private readonly InputAction m_Combat_Fire;
+    private readonly InputAction m_Combat_Blink;
     public struct CombatActions
     {
         private @PlayerControls m_Wrapper;
         public CombatActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shield => m_Wrapper.m_Combat_Shield;
         public InputAction @Fire => m_Wrapper.m_Combat_Fire;
+        public InputAction @Blink => m_Wrapper.m_Combat_Blink;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -319,6 +342,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @Blink.started += instance.OnBlink;
+            @Blink.performed += instance.OnBlink;
+            @Blink.canceled += instance.OnBlink;
         }
 
         private void UnregisterCallbacks(ICombatActions instance)
@@ -329,6 +355,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @Blink.started -= instance.OnBlink;
+            @Blink.performed -= instance.OnBlink;
+            @Blink.canceled -= instance.OnBlink;
         }
 
         public void RemoveCallbacks(ICombatActions instance)
@@ -356,5 +385,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnShield(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnBlink(InputAction.CallbackContext context);
     }
 }

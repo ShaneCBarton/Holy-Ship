@@ -28,6 +28,16 @@ public class FlightControl : MonoBehaviour
     [SerializeField] private float energyCostToShield;
     [SerializeField] private float energyCostToBlink;
 
+    [Header("Blink Ability Variables")]
+    [SerializeField] private float blinkDistanceMultiplier;
+    [SerializeField] private float blinkCooldown;
+
+    enum CooldownType
+    {
+        Shoot,
+        Blink
+    }
+
     private PlayerControls playerControls;
     private Rigidbody2D myRigidbody;
     private Energy energy;
@@ -36,7 +46,11 @@ public class FlightControl : MonoBehaviour
     private bool isMoving = false;
     private bool isBraking = false;
     private bool isShooting = false;
+    private bool isBlinking = false;
+
     private bool canShoot = true;
+    private bool canShield = true;
+    private bool canBlink = true;
 
     private void Awake()
     {
@@ -55,6 +69,7 @@ public class FlightControl : MonoBehaviour
         playerControls.Combat.Shield.started += _ => OnShieldStart();
         playerControls.Combat.Shield.canceled += _ => OnShieldStop();
         playerControls.Combat.Fire.performed += _ => OnFire();
+        playerControls.Combat.Blink.performed += _ => OnBlink();
 
         energy = gameObject.GetComponentInChildren<Energy>();
     }
@@ -101,8 +116,7 @@ public class FlightControl : MonoBehaviour
 
     private void OnShieldStart()
     {
-
-        bool canShield = energyCostToShield <= energy.CurrentEnergyAmount;
+        canShield = energyCostToShield <= energy.CurrentEnergyAmount;
         if (!canShield) { return; }
 
         shieldObject.SetActive(true);
@@ -116,11 +130,20 @@ public class FlightControl : MonoBehaviour
 
     private void OnFire()
     {
-        bool canShoot = energyCostToShoot <= energy.CurrentEnergyAmount;
+        canShoot = energyCostToShoot <= energy.CurrentEnergyAmount;
         if (!canShoot) { return; }
-            
+
         isShooting = true;
         energy.ConsumeEnergy(energyCostToShoot);
+    }
+
+    private void OnBlink()
+    {
+        canBlink = energyCostToBlink <= energy.CurrentEnergyAmount;
+        if (!canBlink) { return; }
+
+        isBlinking = true;
+        energy.ConsumeEnergy(energyCostToBlink);
     }
 
     private void FixedUpdate()
@@ -133,6 +156,7 @@ public class FlightControl : MonoBehaviour
     private void Update()
     {
         Fire();
+        Blink();
     }
 
     private void RotateShip()
@@ -186,13 +210,34 @@ public class FlightControl : MonoBehaviour
             Instantiate(projectilePrefab, projectileSpawnPoint);
             canShoot = false;
             isShooting = false;
-            StartCoroutine(FiringCooldownRoutine());
+            StartCoroutine(CooldownRoutine(projectileCooldown, CooldownType.Shoot));
         }
     }
-   
-    private IEnumerator FiringCooldownRoutine()
+
+    private void Blink()
     {
-        yield return new WaitForSeconds(projectileCooldown);
-        canShoot = true;
+        if (isBlinking && canBlink)
+        {
+            Vector2 newPosition = transform.position * blinkDistanceMultiplier;
+            myRigidbody.position = newPosition;
+
+            StartCoroutine(CooldownRoutine(blinkCooldown, CooldownType.Blink));
+        }
+    }
+
+    private IEnumerator CooldownRoutine(float cooldownTime, CooldownType type)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+
+        switch (type)
+        {
+            case CooldownType.Shoot:
+                canShoot = true;
+                break;
+
+            case CooldownType.Blink:
+                canBlink = true;
+                break;
+        }
     }
 }

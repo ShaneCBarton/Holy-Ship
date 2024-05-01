@@ -1141,7 +1141,9 @@ MonoBehaviour:
   projectileCooldown: 0.25
   energyCostToShoot: 100
   energyCostToShield: 250
-  energyCostToBlink: 0
+  energyCostToBlink: 250
+  blinkDistanceMultiplier: 2
+  blinkCooldown: 1
 --- !u!114 &723923810
 MonoBehaviour:
   m_ObjectHideFlags: 0
