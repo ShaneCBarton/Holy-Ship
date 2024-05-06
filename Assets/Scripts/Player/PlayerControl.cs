@@ -1,22 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Android;
-using UnityEngine.InputSystem;
 
-public class FlightControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [Header("Flight Variables")]
     [SerializeField] private float turnSpeed;
     [SerializeField] private float maxRotationSpeed;
     [SerializeField] private float propelSpeed;
     [SerializeField] private float brakingDrag;
-
-    [Header("Required Game Object References")]
-    [SerializeField] private GameObject shieldObject;
     [SerializeField] private GameObject burnerObject;
     [SerializeField] private GameObject smokeEffectObject;
+    [SerializeField] private GameObject shieldObject;
 
     [Header("Projectile Variables")]
     [SerializeField] private GameObject projectilePrefab;
@@ -31,6 +25,9 @@ public class FlightControl : MonoBehaviour
     [Header("Blink Ability Variables")]
     [SerializeField] private float blinkDistanceMultiplier;
     [SerializeField] private float blinkCooldown;
+    [SerializeField] private float blinkPause;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject blinkEffectObject;
 
     enum CooldownType
     {
@@ -194,7 +191,6 @@ public class FlightControl : MonoBehaviour
 
             start = myRigidbody.angularDrag;
             myRigidbody.angularDrag = Mathf.Lerp(start, brakingDrag, 1);
-
         }
         else
         {
@@ -218,14 +214,32 @@ public class FlightControl : MonoBehaviour
     {
         if (isBlinking && canBlink)
         {
-            Vector2 newPosition = myRigidbody.transform.up * blinkDistanceMultiplier;
-            myRigidbody.position += newPosition;
-
-            canBlink = false;
-            isBlinking = false;
-
-            StartCoroutine(CooldownRoutine(blinkCooldown, CooldownType.Blink));
+            StartCoroutine(BlinkRoutine(blinkPause));
         }
+    }
+
+    public void Teleport()
+    {
+        Vector2 newPosition = myRigidbody.transform.up * blinkDistanceMultiplier;
+        myRigidbody.position += newPosition;
+
+        StartCoroutine(CooldownRoutine(blinkCooldown, CooldownType.Blink));
+    }
+
+    private IEnumerator BlinkRoutine(float teleportPauseTime)
+    {
+        canBlink = false;
+        isBlinking = false;
+
+        spriteRenderer.enabled = false;
+        blinkEffectObject.SetActive(true);
+        
+        yield return new WaitForSeconds(teleportPauseTime);
+        Teleport();
+        yield return new WaitForSeconds(.25f);
+
+        blinkEffectObject.SetActive(true);
+        spriteRenderer.enabled = true;
     }
 
     private IEnumerator CooldownRoutine(float cooldownTime, CooldownType type)
