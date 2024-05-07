@@ -7,7 +7,6 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private GameObject enemyToSpawn;
     [SerializeField] private WaveRoundDataScriptableObject[] waveRoundData;
 
-
     public void SpawnObjects()
     {
         int waveNumber = WaveManager.Instance.WaveNum;
@@ -16,23 +15,18 @@ public class ObjectSpawner : MonoBehaviour
         float asteroidCooldown = waveRoundData[waveNumber].asteroidCooldown;
         float enemyCooldown = waveRoundData[waveNumber].enemyCooldown;
 
-        InstantiateObjects(asteroidAmount, asteroidCooldown, asteroidToSpawn);
-        InstantiateObjects(enemyAmount, enemyCooldown, enemyToSpawn);
+        StartCoroutine(SpawnObjectOnCooldownRoutine(asteroidAmount, asteroidCooldown, asteroidToSpawn));
+        StartCoroutine(SpawnObjectOnCooldownRoutine(enemyAmount, enemyCooldown, enemyToSpawn));
     }
 
-    private void InstantiateObjects(int amount, float cooldown, GameObject objectToSpawn)
+    private IEnumerator SpawnObjectOnCooldownRoutine(int amount, float cooldownDuration, GameObject objectToSpawn)
     {
-        if (amount <= 0) { return; }
+        if (amount <= 0) { yield break; }
 
         for (int i = 1; i <= amount; i++)
         {
-            StartCoroutine(SpawnTimeCooldownRoutine(cooldown));
+            yield return new WaitForSeconds(cooldownDuration);
             Instantiate(objectToSpawn);
         }
-    }
-
-    private IEnumerator SpawnTimeCooldownRoutine(float cooldownDuration)
-    {
-        yield return new WaitForSeconds(cooldownDuration);
     }
 }

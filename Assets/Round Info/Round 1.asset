@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6fe0b00cdf59143a64bc5b5d60d0f0, type: 3}
   m_Name: Round 1
   m_EditorClassIdentifier: 
-  numOfAsteroids: 3
+  numOfAsteroids: 5
   numOfEnemies: 0
+  asteroidCooldown: 1
+  enemyCooldown: 0

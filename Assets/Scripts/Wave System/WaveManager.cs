@@ -9,6 +9,11 @@ public class WaveManager : Singleton<WaveManager>
         spawner = GetComponentInChildren<ObjectSpawner>();
     }
 
+    private void Start()
+    {
+        spawner.SpawnObjects();
+    }
+
     public int WaveNum { get { return waveNum; } }
 
     public void NextWave()
