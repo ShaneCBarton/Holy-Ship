@@ -5,15 +5,15 @@ public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject asteroidToSpawn;
     [SerializeField] private GameObject enemyToSpawn;
-    [SerializeField] private WaveRoundDataScriptableObject[] waveRoundData;
+
 
     public void SpawnObjects()
     {
         int waveNumber = WaveManager.Instance.WaveNum;
-        int asteroidAmount = waveRoundData[waveNumber].numOfAsteroids;
-        int enemyAmount = waveRoundData[waveNumber].numOfEnemies;
-        float asteroidCooldown = waveRoundData[waveNumber].asteroidCooldown;
-        float enemyCooldown = waveRoundData[waveNumber].enemyCooldown;
+        int asteroidAmount = WaveManager.Instance.AsteroidsInLevel;
+        int enemyAmount = WaveManager.Instance.EnemiesInLevel;
+        float asteroidCooldown = WaveManager.Instance.AsteroidCooldownInLevel;
+        float enemyCooldown = WaveManager.Instance.EnemyCooldownInLevel;
 
         StartCoroutine(SpawnObjectOnCooldownRoutine(asteroidAmount, asteroidCooldown, asteroidToSpawn));
         StartCoroutine(SpawnObjectOnCooldownRoutine(enemyAmount, enemyCooldown, enemyToSpawn));
