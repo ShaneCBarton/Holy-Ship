@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numOfAsteroids: 5
   numOfEnemies: 1
+  asteroidCooldown: 3
+  enemyCooldown: 3
