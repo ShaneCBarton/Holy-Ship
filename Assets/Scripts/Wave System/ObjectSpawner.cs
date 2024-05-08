@@ -5,7 +5,8 @@ public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject asteroidToSpawn;
     [SerializeField] private GameObject enemyToSpawn;
-
+    [SerializeField] private Transform[] targetPositions;
+    [SerializeField] private Transform[] spawnPositions;
 
     public void SpawnObjects()
     {
@@ -26,7 +27,12 @@ public class ObjectSpawner : MonoBehaviour
         for (int i = 1; i <= amount; i++)
         {
             yield return new WaitForSeconds(cooldownDuration);
-            Instantiate(objectToSpawn);
+
+            int index = Random.Range(0, spawnPositions.Length);
+            GameObject asteroid = Instantiate(objectToSpawn, spawnPositions[index]);
+            index = Random.Range(0, targetPositions.Length);
+            asteroid.GetComponent<MoveToPoint>().PropelAsteroid(targetPositions[index]);
+            
         }
     }
 }

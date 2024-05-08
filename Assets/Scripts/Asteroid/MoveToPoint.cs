@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MoveToPoint : MonoBehaviour
 {
-    [SerializeField] private Transform[] destinationPoints;
+    [SerializeField] private float minForce, maxForce;
 
     private Rigidbody2D rb;
 
@@ -11,10 +11,9 @@ public class MoveToPoint : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    public void PropelAsteroid(Transform targetPoint)
     {
-        int index = Random.Range(0, destinationPoints.Length);
-
-        rb.AddRelativeForce(destinationPoints[index].forward);
+        float forceMultiplier = Random.Range(minForce, maxForce);
+        rb.AddForce((targetPoint.position - transform.position) * forceMultiplier, ForceMode2D.Impulse);
     }
 }
